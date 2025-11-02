@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Image Gallery</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Responsive Image Gallery</h1>
+
+    <!-- Filter Buttons -->
+    <div class="filter-buttons">
+        <button onclick="filterSelection('all')">All</button>
+        <button onclick="filterSelection('nature')">Nature</button>
+        <button onclick="filterSelection('architecture')">Architecture</button>
+    </div>
+
+    <!-- Gallery -->
+    <div class="gallery">
+        <div class="gallery-item nature">
+            <img src="https://picsum.photos/id/1015/400/300" alt="Nature 1">
+        </div>
+        <div class="gallery-item architecture">
+            <img src="https://picsum.photos/id/1003/400/300" alt="Architecture 1">
+        </div>
+        <div class="gallery-item nature">
+            <img src="https://picsum.photos/id/1016/400/300" alt="Nature 2">
+        </div>
+        <div class="gallery-item architecture">
+            <img src="https://picsum.photos/id/1011/400/300" alt="Architecture 2">
+        </div>
+        <div class="gallery-item nature">
+            <img src="https://picsum.photos/id/1020/400/300" alt="Nature 3">
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <span class="close" onclick="closeLightbox()">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+        <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+        <a class="next" onclick="changeSlide(1)">&#10095;</a>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
