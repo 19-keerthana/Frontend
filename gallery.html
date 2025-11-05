@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Image Gallery</title>
+</head>
+<body>
+    <h1>Responsive Image Gallery</h1>
+        <div class="filter-buttons">
+            <button onclick="filterSection('all')">All</button>
+            <button onclick="filterSection('nature')">Nature</button>
+            <button onclick="filterSection('architecture')">Architecture</button>
+            <button onclick="filterSection('animals')">Animals</button>
+        </div>
+        <div class="gallery">
+             <div class="gallery-item nature">
+                <img src="https://picsum.photos/id/1015/400/300" alt="Nature 1" />
+            </div>
+            <div class="gallery-item architecture">
+                <img src="https://res.cloudinary.com/odysseytraveller/image/fetch/f_auto,q_auto,dpr_auto,r_4,w_765,h_535.5,c_limit/https://cdn.odysseytraveller.com/app/uploads/2018/02/Red-fort-Delhi-India-iStock-470939498.jpg" alt="Red Fort in Delhi">
+            </div>
+            <div class="gallery-item animals">
+                <img src="https://picsum.photos/id/1025/400/300" alt="Animal 1" />
+            </div>
+            <div class="gallery-item nature">
+                <img src="https://cdn.pixabay.com/photo/2015/06/19/21/24/avenue-815297_1280.jpg" alt="Peaceful Nature Path" width="600">
+
+            </div>
+            <div class="gallery-item architecture">
+                <img src="https://cdn.pixabay.com/photo/2015/07/29/22/56/taj-mahal-866692_1280.jpg" alt="Taj Mahal in India" width="600">
+            </div>
+            <div class="gallery-item animals">
+                <img src="https://picsum.photos/id/237/400/300" alt="Animal 2" />
+            </div>
+        </div>
+        <div id="lightbox" class="lightbox">
+            <span class="close" onclick="closeLightbox()">&times;</span>
+            <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+            <img id="lightbox-img" src="" alt="Expanded view" />
+            <a class="next" onclick="changeSlide(1)">&#10095;</a>
+  </div>
+    <style>
+        *{
+            box-sizing:border-box;
+            padding:0;
+            margin:0;
+        }
+        body{
+            font-family: "Poppins", sans-serif;
+            background: #f0f6ff;
+            color: #102945;
+        }
+        h1{
+            text-align: center;
+            padding: 20px;
+            color: #102945;
+            font-family: cursive;
+            font-size: 24px;
+        }
+        .filter-buttons{
+            text-align: center;
+            margin-bottom:20px;
+        }
+        .filter-buttons button{
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            background: #0077ff;
+            color: #fff;
+            font-weight:bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        .filter-buttons button:hover{
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+        .gallery{
+            display:flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap:20px;
+            padding:20px;
+        }
+        .gallery-item{
+            width: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: white;
+        }
+        .gallery-item:hover{
+            transform:translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .gallery-item img {
+            width: 100%;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+        .gallery-item img:hover {
+            transform: scale(1.1);
+            filter: brightness(0.85);
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s ease;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 10px;
+            transition: transform 0.4s ease;
+        }
+        .lightbox .close, .lightbox .prev,.lightbox .next {
+            position: absolute;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background-color: #00000080;
+            padding:10px;
+            border-radius: 5px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.3s ease;
+        }
+        .close:hover, .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .close { top: 20px; right: 30px; }
+        .prev { top: 50%; left: 30px; transform: translateY(-50%); }
+        .next { top: 50%; right: 30px; transform: translateY(-50%); }
+        @keyframes fadeIn{
+            from{opacity:0;}
+            to{opacity:1;}
+        }
+        @media (max-width: 768px) {
+            .gallery-item {
+                width: 45%;
+            }
+        }
+        @media (max-width: 480px) {
+            .gallery-item {
+                width: 100%;
+            }
+            .filter-buttons button {
+                width: 80%;
+                margin: 8px 0;
+            }
+        }
+    </style>
+    <script>
+        let images = [];
+        let currentSlide = 0;
+        const lightbox = document.getElementById("lightbox");
+        const lightboxImg = document.getElementById("lightbox-img");
+        document.addEventListener("DOMContentLoaded", () => {
+            images = Array.from(document.querySelectorAll(".gallery-item img"));
+            images.forEach((img, index) => {
+                img.addEventListener("click", () => openLightbox(index));
+            });
+        });
+            function openLightbox(index) {
+                currentSlide = index;
+                lightbox.style.display = "flex";
+                showSlide(currentSlide);
+            }
+            function closeLightbox() {
+                lightbox.style.display = "none";
+            }
+            function changeSlide(n) {
+                currentSlide += n;
+                if (currentSlide < 0) currentSlide = images.length - 1;
+                if (currentSlide >= images.length) currentSlide = 0;
+                showSlide(currentSlide);
+            }
+            function showSlide(index) {
+                lightboxImg.src = images[index].src;
+            }
+            function filterSection(category) {
+                const items = document.querySelectorAll(".gallery-item");
+                items.forEach((item) => {
+                    if (category === "all" || item.classList.contains(category)) {
+                        item.style.display = "block";
+                    }
+                    else {
+                        item.style.display = "none";
+                    }
+                });
+            }
+        </script>
+</body>
+</html>
